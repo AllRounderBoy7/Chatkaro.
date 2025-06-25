@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Salee.chatter</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- Splash Screen -->
+  <div id="splash-screen" class="centered">
+    <h1>Made by Sameer</h1>
+  </div>
+
+  <!-- Login/Create Account -->
+  <div id="auth-screen" class="auth">
+    <h2>Welcome to Salee.chatter</h2>
+    <input id="username" placeholder="Enter unique username" />
+    <input id="password" type="password" placeholder="Password" />
+    <button onclick="createAccount()">Create Account</button>
+    <button onclick="login()">Log In</button>
+    <p id="auth-error"></p>
+  </div>
+
+  <!-- Main Chat App -->
+  <div id="chat-app" class="hidden">
+    <!-- Header -->
+    <div class="header">
+      <span id="current-user"></span>
+      <button onclick="logout()">Logout</button>
+    </div>
+
+    <!-- Friend Search & Requests -->
+    <div class="search-section">
+      <input id="search-input" placeholder="Search users..." oninput="searchUsers()" />
+      <div id="search-results"></div>
+    </div>
+
+    <!-- Chat Section -->
+    <div class="chat-section">
+      <div id="chat-window"></div>
+      <div class="send-bar">
+        <input id="message-input" placeholder="Type a message..." />
+        <input type="file" id="photo-input" onchange="sendPhoto()" />
+        <button onclick="sendMessage()">Send</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

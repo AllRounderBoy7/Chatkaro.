@@ -1,0 +1,76 @@
+let users = JSON.parse(localStorage.getItem("users")) || {};
+let currentUser = localStorage.getItem("currentUser");
+
+window.onload = function () {
+  if (currentUser) loadMainScreen();
+  else showScreen("splash-screen", 1500, "auth-screen");
+};
+
+function showScreen(id, delay, next) {
+  document.getElementById(id).classList.remove("hidden");
+  setTimeout(() => {
+    document.getElementById(id).classList.add("hidden");
+    document.getElementById(next).classList.remove("hidden");
+  }, delay);
+}
+
+function createAccount() {
+  let username = document.getElementById("username").value.trim();
+  let password = document.getElementById("password").value;
+  if (!username || users[username]) return alert("Username taken!");
+
+  users[username] = { password, friends: [], chats: {} };
+  localStorage.setItem("users", JSON.stringify(users));
+  localStorage.setItem("currentUser", username);
+  loadMainScreen();
+}
+
+function login() {
+  let username = document.getElementById("username").value.trim();
+  let password = document.getElementById("password").value;
+  if (users[username]?.password === password) {
+    localStorage.setItem("currentUser", username);
+    loadMainScreen();
+  } else {
+    alert("Invalid credentials");
+  }
+}
+
+function logout() {
+  localStorage.removeItem("currentUser");
+  location.reload();
+}
+
+function loadMainScreen() {
+  document.getElementById("auth-screen").classList.add("hidden");
+  document.getElementById("chat-app").classList.remove("hidden");
+  document.getElementById("current-user").textContent = localStorage.getItem("currentUser");
+}
+
+function sendMessage() {
+  let msg = document.getElementById("message-input").value.trim();
+  if (!msg) return;
+  let chat = document.getElementById("chat-window");
+  let div = document.createElement("div");
+  div.className = "message self";
+  div.innerText = msg + " ✓✓";
+  chat.appendChild(div);
+  document.getElementById("message-input").value = "";
+}
+
+function sendPhoto() {
+  let file = document.getElementById("photo-input").files[0];
+  if (!file) return;
+  let reader = new FileReader();
+  reader.onload = function (e) {
+    let chat = document.getElementById("chat-window");
+    let div = document.createElement("div");
+    div.className = "message self";
+    let img = document.createElement("img");
+    img.src = e.target.result;
+    img.style.maxWidth = "200px";
+    div.appendChild(img);
+    chat.appendChild(div);
+  };
+  reader.readAsDataURL(file);
+}
